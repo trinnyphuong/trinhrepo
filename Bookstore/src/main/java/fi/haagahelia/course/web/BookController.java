@@ -15,6 +15,9 @@ public class BookController {
 	@Autowired
 	private BookRepository repo;
 	
+	@Autowired
+	private CategoryRepository crepo;
+	
 	@RequestMapping(value="/booklist")
 	public String bookList(Model model) {
 		model.addAttribute("books", repo.findAll());
@@ -24,6 +27,7 @@ public class BookController {
 	@RequestMapping(value = "/add")
     public String addBook(Model model){
     	model.addAttribute("book", new Book());
+    	model.addAttribute("categories", crepo.findAll());
         return "addbook";
     }     
     
@@ -36,6 +40,6 @@ public class BookController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteBook(@PathVariable("id") Long bookId, Model model) {
     	repo.delete(bookId);
-        return "redirect:booklist";
+        return "redirect:../booklist";
     }  
 }

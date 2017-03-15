@@ -19,14 +19,19 @@ public class BookstoreApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner studentDemo(BookRepository repository) {
+	public CommandLineRunner bookDemo(BookRepository brepo, CategoryRepository crepo) {
 		return (args) -> {
 			log.info("Save a few books");
-			repository.save(new Book("Ernest Hemingway", "A Farewell to Arms", "1232323-21", 1929));
-			repository.save(new Book("Geogre Orwell", "Animal Farm", "2212343-5", 1945));	
+			
+			crepo.save(new Category("Love Novel"));
+			crepo.save(new Category("Detective"));
+			
+			brepo.save(new Book("Ernest Hemingway", "A Farewell to Arms",
+					"1232323-21", 1929, crepo.findByName("Love Novel").get(0)));
+			brepo.save(new Book("Geogre Orwell", "Animal Farm", "2212343-5", 1945, crepo.findByName("Detective").get(0)));	
 			
 			log.info("Fetching all books");
-			for (Book book : repository.findAll()) {
+			for (Book book : brepo.findAll()) {
 				log.info(book.toString());
 			}
 
